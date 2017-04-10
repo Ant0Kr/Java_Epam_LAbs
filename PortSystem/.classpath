@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="D:/УЧЁБА/БГУИР/4 СЕМ/КПП/sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="D:/Eclipse_workspace/swt-4.7M5-win32-win32-x86_64.zip"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
+	<classpathentry kind="lib" path="swing2swt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.core.databinding_1.6.0.v20160412-0910.jar" sourcepath="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.core.databinding_1.6.0.v20160412-0910.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.core.databinding.beans_1.3.100.v20160509-1025.jar" sourcepath="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.core.databinding.beans_1.3.100.v20160509-1025.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.core.databinding.observable_1.6.0.v20160511-1747.jar" sourcepath="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.core.databinding.observable_1.6.0.v20160511-1747.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.core.databinding.property_1.6.0.v20160427-0852.jar" sourcepath="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.core.databinding.property_1.6.0.v20160427-0852.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.jface.databinding_1.8.1.v20161026-1531.jar" sourcepath="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.jface.databinding_1.8.1.v20161026-1531.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.equinox.common_3.8.0.v20160509-1230.jar" sourcepath="C:/Users/Antoha12018/.p2/pool/plugins/org.eclipse.equinox.common_3.8.0.v20160509-1230.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Antoha12018/.p2/pool/plugins/com.ibm.icu_56.1.0.v201601250100.jar" sourcepath="C:/Users/Antoha12018/.p2/pool/plugins/com.ibm.icu_56.1.0.v201601250100.jar"/>
+	<classpathentry kind="lib" path="D:/Загрузки/apache-log4cxx-0.10.0.zip"/>
+	<classpathentry kind="lib" path="D:/Загрузки/apache-log4j-2.8.1-src.zip"/>
+	<classpathentry kind="lib" path="D:/Загрузки/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="properties"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

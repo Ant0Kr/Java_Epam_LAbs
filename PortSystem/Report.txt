@@ -1,0 +1,18 @@
+Time[Mon Apr 10 19:39:46 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:0
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Mon Apr 10 19:39:51 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:0
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
