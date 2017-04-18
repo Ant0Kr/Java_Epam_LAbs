@@ -1,7 +1,12 @@
 package gui;
 
+import resources.GeneratePDF;
 import resources.Structure;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.rmi.server.ExportException;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -9,6 +14,7 @@ import java.util.Vector;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
@@ -22,8 +28,13 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import com.itextpdf.text.DocumentException;
+
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import models.Pier;
 import models.Port;
+import models.Ship;
 import models.containerGood;
 
 import org.eclipse.swt.widgets.TableColumn;
@@ -34,72 +45,79 @@ import org.eclipse.swt.widgets.TableItem;
  * The Class Main.
  */
 public class Main extends Shell {
-	
+
 	/** The table. */
 	private static Table table;
-	
+
 	/** The pier table. */
 	private static Table pierTable;
-	
+
 	/** The ship table. */
 	private static Table shipTable;
 
 	/** The shell. */
 	private static Shell shell;
-	
+
 	/** The display. */
 	private static Display display;
-	
+
 	/** The composite. */
 	private static Composite composite;
 
 	/** The combo ship. */
 	private static Combo comboShip;
-	
+
 	/** The combo pier. */
 	private static Combo comboPier;
 
 	/** The add wnd. */
 	private static newShip addWnd;
-	
+
 	/** The go in. */
 	private static goInPort goIn;
 
 	/** The ship label. */
 	private static Label shipLabel;
-	
+
 	/** The pier label. */
 	private static Label pierLabel;
 
 	/** The vector ship size. */
 	private static int vectorShipSize = 0;
-	
+
 	/** The vector pier size. */
 	private static int vectorPierSize = 0;
 
 	/** The go in btn. */
 	private static Button goInBtn;
-	
+
 	/** The add pier btn. */
 	private static Button addPierBtn;
-	
+
 	/** The add ship btn. */
 	private static Button addShipBtn;
-	
+
 	/** The lbl new label. */
 	private Label lblNewLabel;
-	
+
 	/** The Time. */
 	private static Label Time;
 	private Label label;
 
+	private static Button ExportPier;
+	private static Button ExportShip;
+
 	/**
 	 * Launch the application.
 	 *
-	 * @param args the arguments
-	 * @throws InterruptedException the interrupted exception
-	 * @throws ClassNotFoundException the class not found exception
-	 * @throws SQLException the SQL exception
+	 * @param args
+	 *            the arguments
+	 * @throws InterruptedException
+	 *             the interrupted exception
+	 * @throws ClassNotFoundException
+	 *             the class not found exception
+	 * @throws SQLException
+	 *             the SQL exception
 	 */
 	public static void main(String args[]) throws InterruptedException, ClassNotFoundException, SQLException {
 
@@ -122,7 +140,7 @@ public class Main extends Shell {
 
 						repaintComboPier();
 					}
-					if (!Time.isDisposed() ) {
+					if (!Time.isDisposed()) {
 						repaintTimeLabel();
 					}
 				}
@@ -137,7 +155,8 @@ public class Main extends Shell {
 	/**
 	 * Create the shell.
 	 *
-	 * @throws InterruptedException the interrupted exception
+	 * @throws InterruptedException
+	 *             the interrupted exception
 	 */
 	public Main() throws InterruptedException {
 		super(display, SWT.SHELL_TRIM);
@@ -185,43 +204,60 @@ public class Main extends Shell {
 		comboShip = new Combo(composite, SWT.NONE);
 		comboShip.setBounds(327, 251, 145, 23);
 		comboShip.setText("-ships-");
-		
+
 		lblNewLabel = new Label(composite, SWT.NONE);
 		lblNewLabel.setImage(SWTResourceManager.getImage("C:\\Users\\Antoha12018\\Desktop\\myImage.png"));
 		lblNewLabel.setBackground(SWTResourceManager.getColor(153, 204, 204));
 		lblNewLabel.setBounds(10, 0, 64, 57);
-		
+
 		Time = new Label(composite, SWT.NONE);
 		Time.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		Time.setBackground(SWTResourceManager.getColor(153, 204, 204));
 		Time.setBounds(80, 32, 266, 25);
-		
+
 		Label lblPortsinyavka = new Label(composite, SWT.NONE);
 		lblPortsinyavka.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblPortsinyavka.setBackground(SWTResourceManager.getColor(153, 204, 204));
 		lblPortsinyavka.setBounds(80, 10, 213, 32);
 		lblPortsinyavka.setText("Port:Sinyavka");
-		
+
 		Label lblByAntonKatachun = new Label(composite, SWT.NONE);
 		lblByAntonKatachun.setAlignment(SWT.CENTER);
 		lblByAntonKatachun.setText("All rights reserved.");
 		lblByAntonKatachun.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		lblByAntonKatachun.setBackground(SWTResourceManager.getColor(153, 204, 204));
 		lblByAntonKatachun.setBounds(0, 542, 663, 15);
-		
+
 		label = new Label(composite, SWT.NONE);
 		label.setAlignment(SWT.CENTER);
 		label.setText("By Anton Karachun,550504. Bsuir/Epam/Lab2/MultiThreading.");
 		label.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		label.setBackground(SWTResourceManager.getColor(153, 204, 204));
 		label.setBounds(0, 527, 663, 15);
+
+		ExportPier = new Button(composite, SWT.NONE);
+		ExportPier.setEnabled(false);
+		ExportPier.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
+		ExportPier.setBounds(180, 249, 75, 25);
+		ExportPier.setText("Export PDF");
+		ExportPier.addSelectionListener(exportPierSelection());
+
+		ExportShip = new Button(composite, SWT.NONE);
+		ExportShip.setEnabled(false);
+		ExportShip.setBounds(497, 251, 75, 25);
+		ExportShip.setText("Export PDF");
+		ExportShip.addSelectionListener(exportShipSelection());
 		comboShip.addSelectionListener(comboShipSelection());
 
 		this.addDisposeListener(new DisposeListener() {
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				Structure.getGheckThread().interrupt();
-				
+
 			}
 
 		});
@@ -262,7 +298,7 @@ public class Main extends Shell {
 		TableColumn tblclmnAllTimemin = new TableColumn(table, SWT.NONE);
 		tblclmnAllTimemin.setWidth(137);
 		tblclmnAllTimemin.setText("Time for mooring(min)");
-		
+
 	}
 
 	/**
@@ -304,6 +340,63 @@ public class Main extends Shell {
 		tblclmnCount.setText("Count");
 	}
 
+	public static SelectionAdapter exportShipSelection() {
+
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				FileDialog fileDialog = new FileDialog(shell, SWT.MULTI);
+				fileDialog.setText("Save Document");
+				fileDialog.setFilterExtensions(new String[] { "*.pdf", "*.*" });
+				fileDialog.setFilterNames(new String[] { "PDF Format", "Any" });
+				String file = fileDialog.open();
+				if (file != null) {
+					file = file + ".pdf";
+					try {
+						Ship ship = Structure.getRealShip(comboShip.getText());
+						GeneratePDF.createPDF(file,ship.getQueneGood(), true);
+					} catch (FileNotFoundException | ClassNotFoundException | DocumentException | SQLException
+							| InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				}
+			}
+
+		};
+
+	}
+	public static SelectionAdapter exportPierSelection() {
+
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				FileDialog fileDialog = new FileDialog(shell, SWT.MULTI);
+				fileDialog.setText("Save Document");
+				fileDialog.setFilterExtensions(new String[] { "*.pdf", "*.*" });
+				fileDialog.setFilterNames(new String[] { "PDF Format", "Any" });
+				String file = fileDialog.open();
+				if (file != null) {
+					file = file + ".pdf";
+					try {
+						Pier pier = Structure.getPort().getRealPier(comboPier.getText());
+						GeneratePDF.createPDF(file,pier.getQueneGood(), true);
+					} catch (FileNotFoundException | ClassNotFoundException | DocumentException | SQLException
+							| InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				}
+			}
+
+		};
+
+	}
+
 	/**
 	 * Go in selection.
 	 *
@@ -314,7 +407,9 @@ public class Main extends Shell {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+
 				goInBtn.setEnabled(false);
+				ExportShip.setEnabled(false);
 				if (goIn == null || goIn.isDisposed()) {
 					goIn = new goInPort(Structure.getRealShip(comboShip.getText()));
 					goIn.open();
@@ -339,6 +434,10 @@ public class Main extends Shell {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String Label = Structure.getPort().getPierCombo(comboPier.getText());
+				if (Label == "-pier-")
+					ExportPier.setEnabled(false);
+				else
+					ExportPier.setEnabled(true);
 				if (Label == "null") {
 					pierLabel.setText("");
 				} else
@@ -366,9 +465,12 @@ public class Main extends Shell {
 					buf = buf + "Ship:" + Label;
 				if (Structure.getRealShip(comboShip.getText()).getFlagInPort()) {
 					goInBtn.setEnabled(false);
+					ExportShip.setEnabled(false);
 					buf = buf + ". In Port!";
-				} else
+				} else {
 					goInBtn.setEnabled(true);
+					ExportShip.setEnabled(true);
+				}
 				shipLabel.setText(buf);
 				repaintTableShip();
 
@@ -587,12 +689,12 @@ public class Main extends Shell {
 		composite.layout();
 
 	}
-	
+
 	/**
 	 * Repaint time label.
 	 */
-	public static void repaintTimeLabel(){
-		Time.setText(""+Calendar.getInstance().getTime()+"");
+	public static void repaintTimeLabel() {
+		Time.setText("" + Calendar.getInstance().getTime() + "");
 	}
 
 	/**
@@ -604,20 +706,30 @@ public class Main extends Shell {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.widgets.Decorations#checkSubclass()
 	 */
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
 	}
-	
+
 	/**
 	 * Gets the composite.
 	 *
 	 * @return the composite
 	 */
-	public static Composite getComposite(){
+	public static Composite getComposite() {
 		return composite;
+	}
+
+	public static String getCurrentShipSection() {
+		return comboShip.getText();
+	}
+
+	public static String getCurrentPierSection() {
+		return comboPier.getText();
 	}
 }

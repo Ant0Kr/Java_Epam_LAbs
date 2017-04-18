@@ -1,48 +1,54 @@
-[2017-04-09 14:34:54,711] [INFO] - Pier ¹1 preserved!
-[2017-04-09 14:34:54,737] [INFO] - Ship UnknownEnot2 moored to the pier ¹1
-[2017-04-09 14:34:54,737] [INFO] - Ship UnknownEnot2 unloading on pier ¹1
-[2017-04-09 14:35:00,551] [INFO] - Pier ¹2 preserved!
-[2017-04-09 14:35:00,552] [INFO] - Ship UnknownEnot3 moored to the pier ¹2
-[2017-04-09 14:35:00,552] [INFO] - Ship UnknownEnot3 unloading on pier ¹2
-[2017-04-09 14:35:07,044] [INFO] - Pier ¹3 preserved!
-[2017-04-09 14:35:07,044] [INFO] - Ship Golandec moored to the pier ¹3
-[2017-04-09 14:35:07,044] [INFO] - Ship Golandec unloading on pier ¹3
-[2017-04-09 14:35:14,554] [INFO] - Hold of ship UnknownEnot3 is empty!
-[2017-04-09 14:35:14,554] [INFO] - Ship UnknownEnot3 went from port Syniavka
-[2017-04-09 14:35:14,740] [INFO] - Ship UnknownEnot2 unloaded!
-[2017-04-09 14:35:14,740] [INFO] - Ship UnknownEnot2 went from port Syniavka
-[2017-04-09 14:35:14,793] [INFO] - Pier ¹2 is free!
-[2017-04-09 14:35:14,812] [INFO] - Pier ¹2 preserved!
-[2017-04-09 14:35:14,812] [INFO] - Ship SudMarinaEvgenPoker moored to the pier ¹2
-[2017-04-09 14:35:14,812] [INFO] - Ship SudMarinaEvgenPoker unloading on pier ¹2
-[2017-04-09 14:35:14,881] [INFO] - Pier ¹1 is free!
-[2017-04-09 14:35:24,456] [INFO] - Pier ¹1 preserved!
-[2017-04-09 14:35:24,456] [INFO] - Ship Titanic moored to the pier ¹1
-[2017-04-09 14:35:24,457] [INFO] - Ship Titanic unloading on pier ¹1
-[2017-04-09 14:35:27,047] [INFO] - Ship Golandec unloaded!
-[2017-04-09 14:35:27,047] [INFO] - Ship Golandec went from port Syniavka
-[2017-04-09 14:35:27,170] [INFO] - Pier ¹3 is free!
-[2017-04-09 14:35:29,389] [INFO] - Pier ¹3 preserved!
-[2017-04-09 14:35:29,389] [INFO] - Ship BlackPearl moored to the pier ¹3
-[2017-04-09 14:35:29,389] [INFO] - Ship BlackPearl unloading on pier ¹3
-[2017-04-09 14:35:34,814] [INFO] - Ship SudMarinaEvgenPoker unloaded!
-[2017-04-09 14:35:34,814] [INFO] - Ship SudMarinaEvgenPoker went from port Syniavka
-[2017-04-09 14:35:34,938] [INFO] - Pier ¹2 is free!
-[2017-04-09 14:35:35,205] [INFO] - Pier ¹2 preserved!
-[2017-04-09 14:35:35,205] [INFO] - Ship UnknownEnot1 moored to the pier ¹2
-[2017-04-09 14:35:35,205] [INFO] - Ship UnknownEnot1 unloading on pier ¹2
-[2017-04-09 14:35:40,453] [INFO] - Pier ¹4 preserved!
-[2017-04-09 14:35:40,453] [INFO] - Ship UnknownEnot2 moored to the pier ¹4
-[2017-04-09 14:35:40,453] [INFO] - Ship UnknownEnot2 unloading on pier ¹4
-[2017-04-09 14:35:42,453] [INFO] - Hold of ship UnknownEnot2 is empty!
-[2017-04-09 14:35:42,453] [INFO] - Ship UnknownEnot2 went from port Syniavka
-[2017-04-09 14:35:42,637] [INFO] - Pier ¹4 is free!
-[2017-04-09 14:35:44,459] [INFO] - Ship Titanic unloaded!
-[2017-04-09 14:35:44,459] [INFO] - Ship Titanic went from port Syniavka
-[2017-04-09 14:35:44,648] [INFO] - Pier ¹1 is free!
-[2017-04-09 14:35:45,391] [INFO] - Hold of ship BlackPearl is empty!
-[2017-04-09 14:35:45,391] [INFO] - Ship BlackPearl went from port Syniavka
-[2017-04-09 14:35:45,470] [INFO] - Pier ¹3 is free!
-[2017-04-09 14:35:55,207] [INFO] - Ship UnknownEnot1 unloaded!
-[2017-04-09 14:35:55,207] [INFO] - Ship UnknownEnot1 went from port Syniavka
-[2017-04-09 14:35:55,326] [INFO] - Pier ¹2 is free!
+[2017-04-18 03:33:43,307] [INFO] - Pier ¹1 preserved!
+[2017-04-18 03:33:43,332] [INFO] - Ship Golandec moored to the pier ¹1
+[2017-04-18 03:33:43,332] [INFO] - Ship Golandec unloading on pier ¹1
+[2017-04-18 03:34:03,356] [INFO] - Ship Golandec unloaded!
+[2017-04-18 03:34:03,356] [INFO] - Ship Golandec went from port Syniavka
+[2017-04-18 03:34:03,471] [INFO] - Pier ¹1 is free!
+[2017-04-18 03:36:34,921] [INFO] - Pier ¹1 preserved!
+[2017-04-18 03:36:34,922] [INFO] - Ship UnknownEnot2 moored to the pier ¹1
+[2017-04-18 03:36:34,922] [INFO] - Ship UnknownEnot2 unloading on pier ¹1
+[2017-04-18 03:36:54,925] [INFO] - Ship UnknownEnot2 unloaded!
+[2017-04-18 03:36:54,925] [INFO] - Ship UnknownEnot2 went from port Syniavka
+[2017-04-18 03:36:55,029] [INFO] - Pier ¹1 is free!
+[2017-04-18 03:37:11,211] [INFO] - Pier ¹1 preserved!
+[2017-04-18 03:37:11,212] [INFO] - Ship UnknownEnot1 moored to the pier ¹1
+[2017-04-18 03:37:11,212] [INFO] - Ship UnknownEnot1 unloading on pier ¹1
+[2017-04-18 03:37:20,437] [INFO] - Pier ¹2 preserved!
+[2017-04-18 03:37:20,438] [INFO] - Ship BlackPearl moored to the pier ¹2
+[2017-04-18 03:37:20,438] [INFO] - Ship BlackPearl unloading on pier ¹2
+[2017-04-18 03:37:27,214] [INFO] - Hold of ship UnknownEnot1 is empty!
+[2017-04-18 03:37:27,214] [INFO] - Ship UnknownEnot1 went from port Syniavka
+[2017-04-18 03:37:27,341] [INFO] - Pier ¹1 is free!
+[2017-04-18 03:37:40,440] [INFO] - Ship BlackPearl unloaded!
+[2017-04-18 03:37:40,440] [INFO] - Ship BlackPearl went from port Syniavka
+[2017-04-18 03:37:40,596] [INFO] - Pier ¹2 is free!
+[2017-04-18 03:39:09,581] [INFO] - Pier ¹1 preserved!
+[2017-04-18 03:39:09,582] [INFO] - Ship UnknownEnot2 moored to the pier ¹1
+[2017-04-18 03:39:09,582] [INFO] - Ship UnknownEnot2 unloading on pier ¹1
+[2017-04-18 03:39:19,468] [INFO] - Pier ¹2 preserved!
+[2017-04-18 03:39:19,469] [INFO] - Ship BlackPearl moored to the pier ¹2
+[2017-04-18 03:39:19,469] [INFO] - Ship BlackPearl unloading on pier ¹2
+[2017-04-18 03:39:27,833] [INFO] - Pier ¹3 preserved!
+[2017-04-18 03:39:27,833] [INFO] - Ship Titanic moored to the pier ¹3
+[2017-04-18 03:39:27,833] [INFO] - Ship Titanic unloading on pier ¹3
+[2017-04-18 03:39:29,586] [INFO] - Ship UnknownEnot2 unloaded!
+[2017-04-18 03:39:29,586] [INFO] - Ship UnknownEnot2 went from port Syniavka
+[2017-04-18 03:39:29,690] [INFO] - Pier ¹1 is free!
+[2017-04-18 03:39:39,472] [INFO] - Ship BlackPearl unloaded!
+[2017-04-18 03:39:39,472] [INFO] - Ship BlackPearl went from port Syniavka
+[2017-04-18 03:39:39,665] [INFO] - Pier ¹2 is free!
+[2017-04-18 03:39:47,835] [INFO] - Ship Titanic unloaded!
+[2017-04-18 03:39:47,835] [INFO] - Ship Titanic went from port Syniavka
+[2017-04-18 03:39:47,976] [INFO] - Pier ¹3 is free!
+[2017-04-18 04:32:44,590] [INFO] - Pier ¹1 preserved!
+[2017-04-18 04:32:44,591] [INFO] - Ship UnknownEnot1 moored to the pier ¹1
+[2017-04-18 04:32:44,591] [INFO] - Ship UnknownEnot1 unloading on pier ¹1
+[2017-04-18 04:32:50,593] [INFO] - Hold of ship UnknownEnot1 is empty!
+[2017-04-18 04:32:50,593] [INFO] - Ship UnknownEnot1 went from port Syniavka
+[2017-04-18 04:32:50,682] [INFO] - Pier ¹1 is free!
+[2017-04-18 04:33:32,262] [INFO] - Pier ¹1 preserved!
+[2017-04-18 04:33:32,267] [INFO] - Ship UnknownEnot1 moored to the pier ¹1
+[2017-04-18 04:33:32,267] [INFO] - Ship UnknownEnot1 unloading on pier ¹1
+[2017-04-18 04:33:52,415] [INFO] - Ship UnknownEnot1 unloaded!
+[2017-04-18 04:33:52,415] [INFO] - Ship UnknownEnot1 went from port Syniavka
+[2017-04-18 04:33:52,526] [INFO] - Pier ¹1 is free!

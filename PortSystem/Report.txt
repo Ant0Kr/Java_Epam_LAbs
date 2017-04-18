@@ -1,4 +1,4 @@
-Time[Mon Apr 10 19:39:46 MSK 2017]
+Time[Tue Apr 18 04:33:26 MSK 2017]
 Port:Syniavka
 Pier ¹1
 Containers on storage:0
@@ -7,10 +7,199 @@ Pier ¹2
 Containers on storage:0
 Ship near pier: null.
 
-Time[Mon Apr 10 19:39:51 MSK 2017]
+Time[Tue Apr 18 04:33:31 MSK 2017]
 Port:Syniavka
 Pier ¹1
 Containers on storage:0
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:33:36 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:2
+Ship near pier:UnknownEnot1
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:33:41 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:4
+Ship near pier:UnknownEnot1
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:33:46 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:7
+Ship near pier:UnknownEnot1
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:33:51 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:9
+Ship near pier:UnknownEnot1
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:33:56 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:34:11 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:34:16 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:34:21 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:34:26 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:34:31 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:34:36 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:34:41 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:34:46 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:34:51 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:34:56 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:35:01 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:35:06 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:35:11 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:35:16 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:35:21 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
+Ship near pier: null.
+Pier ¹2
+Containers on storage:0
+Ship near pier: null.
+
+Time[Tue Apr 18 04:35:26 MSK 2017]
+Port:Syniavka
+Pier ¹1
+Containers on storage:10
 Ship near pier: null.
 Pier ¹2
 Containers on storage:0

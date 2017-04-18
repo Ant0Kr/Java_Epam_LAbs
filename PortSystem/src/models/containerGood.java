@@ -7,7 +7,6 @@ package models;
 /**
  * The Class containerGood.
  */
-@SuppressWarnings("unused")
 public class containerGood {
 
 	/** The good name. */
@@ -35,7 +34,7 @@ public class containerGood {
 	public String getGoodName() {
 		return goodName;
 	}
-
+	
 	/**
 	 * Gets the good count.
 	 *

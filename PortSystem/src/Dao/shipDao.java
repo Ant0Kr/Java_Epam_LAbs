@@ -2,9 +2,6 @@ package Dao;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Vector;
-
-import javafx.collections.ObservableList;
 import models.Ship;
 
 // TODO: Auto-generated Javadoc
