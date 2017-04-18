@@ -17,6 +17,7 @@ public class Data {
 	private SimpleStringProperty way;
 	private SimpleStringProperty extension;
 	private SimpleStringProperty size;
+	private Boolean flag;
 
 	public Data(String file_name, String way, String extension, String size) {
 		this.file_name = new SimpleStringProperty(file_name);
@@ -55,5 +56,9 @@ public class Data {
 
 	public void setSize(String fName) {
 		size.set(fName);
+	}
+	
+	public Boolean getFlag(){
+		return flag;
 	}
 }

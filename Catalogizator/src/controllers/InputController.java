@@ -2,6 +2,8 @@ package controllers;
 
 import java.sql.SQLException;
 
+import javax.swing.ViewportLayout;
+
 import org.apache.log4j.Logger;
 
 import implementations.*;
@@ -41,6 +43,11 @@ public class InputController {
 	private static Button sign_btn;
 	private static Boolean guest_flag;
 	private static Boolean user_flag;
+	private static Button regBtn;
+	private static TextField regLogField;
+	private static TextField regPassField;
+	private static Button goBtn;
+	private static String UserName;
 	public static final Logger LOG = Logger.getLogger(InputController.class);
 	
 	public static BorderPane getPane() {
@@ -60,7 +67,8 @@ public class InputController {
 		pass_field.lengthProperty().addListener(user_Listener());
 		guest_flag = false;
 		user_flag = false;
-		
+		regBtn = new Button("Register");
+		regBtn.setOnAction(regAction());
 		
 
 		VBox label_layout = new VBox(13);
@@ -69,14 +77,14 @@ public class InputController {
 		VBox line_layout = new VBox(5);
 		line_layout.getChildren().addAll(log_field, pass_field);
 
-		HBox V_layout = new HBox(8);
+		HBox V_layout = new HBox(26);
 		V_layout.getChildren().addAll(label_layout, line_layout);
 
 		HBox btn_layout = new HBox(5);
 		btn_layout.getChildren().addAll(admin_btn, guest_btn);
 
-		HBox hor_layout = new HBox(50);
-		hor_layout.getChildren().addAll(btn_layout, sign_btn);
+		HBox hor_layout = new HBox(5);
+		hor_layout.getChildren().addAll(btn_layout,regBtn, sign_btn);
 
 		VBox fin_layout = new VBox(5);
 		fin_layout.getChildren().addAll(V_layout, hor_layout);
@@ -96,13 +104,88 @@ public class InputController {
 	public static Boolean getUserFlag() {
 		return user_flag;
 	}
+	
+	public static EventHandler<ActionEvent> regAction() {
+		return new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				if (e.getSource() == regBtn) {
+					
+					regLogField = new TextField();
+					regPassField = new TextField();
+					
+					log_label = new Label("Login");
+					pass_label = new Label("Password");
+					goBtn = new Button("Go");
+					goBtn.setPrefWidth(60);
+					goBtn.setDisable(true);
+					regLogField.lengthProperty().addListener(regListener());
+					regPassField.lengthProperty().addListener(regListener());;
+					goBtn.setOnAction(goAction());
+					
+					VBox label_layout = new VBox(13);
+					label_layout.getChildren().addAll(log_label, pass_label);
 
+					VBox line_layout = new VBox(5);
+					line_layout.getChildren().addAll(regLogField,regPassField);
+
+					HBox V_layout = new HBox(26);
+					V_layout.getChildren().addAll(label_layout, line_layout);
+					
+					HBox btnlay = new HBox(80);
+					Label spaceLbl = new Label();
+					btnlay.getChildren().addAll(spaceLbl,goBtn);
+					
+					VBox finish = new VBox(8);
+					finish.getChildren().addAll(V_layout,btnlay);
+					finish.setPadding(new Insets(20,20,20,20));
+					
+					Main.get_stage().setScene(new Scene(finish,270,130));
+					
+					
+
+				}
+
+			}
+		};
+	}
+	
+	public static EventHandler<ActionEvent> goAction() {
+		return new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				if (e.getSource() == goBtn) {
+					
+					try {
+						UserDaoImplements.getInstance().ConnectionDB();
+						UserDaoImplements.getInstance().WriteDB(regLogField.getText(), regPassField.getText());
+						UserDaoImplements.getInstance().CloseDB();
+						UserName = regLogField.getText();
+						Main.get_stage().setScene(new Scene(WindowController.setTableScene(1, ""), 540, 400));
+						Main.get_stage().setResizable(true);
+						
+					} catch (ClassNotFoundException | SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					
+
+				}
+
+			}
+		};
+	}
+	
+	
 	public static EventHandler<ActionEvent> admin_Action() {
 		return new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				if (e.getSource() == admin_btn) {
+					
 					Main.get_stage().setScene(new Scene(AdminController.getPane(), 260, 120));
+					
 
 				}
 
@@ -120,6 +203,7 @@ public class InputController {
 				if (e.getSource() == guest_btn) {
 					LOG.info("Guest perform enterance into the system!");
 					guest_flag = true;
+					Main.get_stage().setResizable(true);
 					Main.get_stage().setScene(new Scene(WindowController.setTableScene(1, ""), 540, 400));
 				}
 			}
@@ -135,13 +219,15 @@ public class InputController {
 
 				if (e.getSource() == sign_btn) {
 					user_flag = true;
+					UserName = log_field.getText();
+					Main.get_stage().setResizable(true);
 
 					try {
 						UserDaoImplements.getInstance().ConnectionDB();
 						if (UserDaoImplements.getInstance().check_User(log_field.getText(), pass_field.getText())) {
 							UserDaoImplements.getInstance().CloseDB();
 							Main.get_stage().setScene(new Scene(WindowController.setTableScene(1, ""), 540, 400));
-							Main.get_stage().setResizable(false);
+							Main.get_stage().setResizable(true);
 							LOG.info("User - "+log_field.getText()+" perform enterance into the system!");
 						} else {
 							Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -179,9 +265,27 @@ public class InputController {
 
 		};
 	}
+	
+	public static ChangeListener<Number> regListener() {
+
+		return new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+				// TODO Auto-generated method stub
+				if (regLogField.getText().isEmpty() || regPassField.getText().isEmpty()) {
+					goBtn.setDisable(true);
+				} else {
+					goBtn.setDisable(false);
+				}
+			}
+
+		};
+	}
 
 	public static String getLogField() {
-		return log_field.getText();
+		System.out.println(UserName);
+		return UserName;
 	}
 
 }

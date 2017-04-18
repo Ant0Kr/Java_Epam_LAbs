@@ -2,6 +2,8 @@ package implementations;
 
 import java.sql.*;
 
+import org.apache.log4j.Logger;
+
 import interfaces.UserDao;
 
 public class UserDaoImplements implements UserDao {
@@ -10,6 +12,7 @@ public class UserDaoImplements implements UserDao {
 	public static Connection conn;
 	public static Statement statmt;
 	public static ResultSet resSet;
+	public static final Logger LOG = Logger.getLogger(DataDaoImplements.class);
 
 	public UserDaoImplements() {
 	}
@@ -122,6 +125,14 @@ public class UserDaoImplements implements UserDao {
 			return true;
 		}
 
+	}
+	
+	public void WriteDB(String login,String password) throws SQLException {
+		// TODO Auto-generated method stub
+		statmt.execute("INSERT INTO Users(login,password,size,date)" + "VALUES('" + login
+				+ "','" + password + "','" + Integer.toString(10) + "','18.04.2017 ');");
+		LOG.info("User:"+login+" was added!");
+		System.out.println("Запись произведена!");
 	}
 
 }

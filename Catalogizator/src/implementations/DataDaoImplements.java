@@ -126,4 +126,11 @@ public class DataDaoImplements implements DataDao {
 		sttm.close();
 	}
 
+	public void deleteData(Data selectedData) throws SQLException {
+		// TODO Auto-generated method stub
+		Statement sttm = conn.createStatement();
+		sttm.execute("DELETE FROM Data WHERE way = '" + selectedData.getWay() + "';");
+		sttm.close();
+	}
+
 }

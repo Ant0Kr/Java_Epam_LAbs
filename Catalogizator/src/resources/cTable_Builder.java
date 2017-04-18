@@ -63,8 +63,8 @@ public class cTable_Builder {
 				table.setItems(DataDaoImplements.getInstance().Read_Data(num));
 			else
 				table.setItems(DataDaoImplements.getInstance().Search(st, num));
-			table.setMaxWidth(1000);
-			table.setPrefHeight(300);
+			table.setMaxWidth(2000);
+			table.setPrefHeight(1000);
 
 			DataDaoImplements.getInstance().CloseDB();
 		} catch (ClassNotFoundException | SQLException e) {

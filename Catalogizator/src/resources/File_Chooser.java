@@ -2,10 +2,12 @@ package resources;
 
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
+import models.Data;
 
 import java.io.File;
 import java.sql.SQLException;
 
+import controllers.WindowController;
 import implementations.*;
 
 /**
@@ -103,6 +105,8 @@ public class File_Chooser {
 		double d = (double) file.length() / 1048576;
 		DataDaoImplements.getInstance().WriteDB(get_Name(file.getName().toString()), file.toString(), fileName,
 				Double.toString(d), num);
+		WindowController.getList().addFirst(new Data(get_Name(file.getName().toString()), file.toString(), fileName,
+				Double.toString(d)));
 		DataDaoImplements.getInstance().CloseDB();
 		return true;
 

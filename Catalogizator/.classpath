@@ -6,5 +6,14 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="properties"/>
 	<classpathentry kind="lib" path="D:/Загрузки/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse_workspace/jars/iText/itextpdf-5.4.0.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse_workspace/jars/iText/itextpdf-5.4.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse_workspace/jars/iText/itextpdf-5.4.0-sources.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse_workspace/jars/iText/itext-pdfa-5.4.0.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse_workspace/jars/iText/itext-pdfa-5.4.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse_workspace/jars/iText/itext-pdfa-5.4.0-sources.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse_workspace/jars/iText/itext-xtra-5.4.0.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse_workspace/jars/iText/itext-xtra-5.4.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="D:/Eclipse_workspace/jars/iText/itext-xtra-5.4.0-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

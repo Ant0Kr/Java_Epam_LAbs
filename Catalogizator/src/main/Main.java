@@ -23,7 +23,7 @@ public class Main extends Application {
 		// TODO Auto-generated method stub
 
 		stage = new Stage();
-		stage.setScene(new Scene(InputController.getPane(), 250, 135));
+		stage.setScene(new Scene(InputController.getPane(), 260, 135));
 		stage.setResizable(false);
 		stage.setTitle("Catalogizator");
 		stage.show();

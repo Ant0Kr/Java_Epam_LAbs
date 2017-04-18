@@ -3,7 +3,14 @@ package controllers;
 import models.*;
 import resources.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+
+import com.itextpdf.text.DocumentException;
 
 import implementations.DataDaoImplements;
 import javafx.collections.FXCollections;
@@ -16,8 +23,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import main.Main;
 
@@ -31,11 +40,18 @@ import main.Main;
 @SuppressWarnings({ "unused", "rawtypes" })
 public class WindowController {
 
+	private static Data selectedData;
 	private static TextField search_field;
 	private static Button search_btn;
 	private static Button browse_btn;
 	private static Button ago_btn;
+	private static Button deleteBtn;
+	private static Button generatePDF;
+	private static Button cancelBtn;
+	private static TableView table;
+	private static int myNum;
 	private static ComboBox section_Box;
+	private static LinkedList<Data> storageList = new LinkedList<Data>();
 
 	/**
 	 * 
@@ -47,8 +63,8 @@ public class WindowController {
 	 *         also can repain scene if user change value in ComboBox.
 	 */
 	@SuppressWarnings("unchecked")
-	public static VBox setTableScene(int num, String st) {
-
+	public static BorderPane setTableScene(int num, String st) {
+		myNum = num;
 		section_Box = new ComboBox();
 		section_Box.getItems().addAll("Books", "Audio", "Films", "Documents");
 		section_Box.setValue("Books");
@@ -62,6 +78,13 @@ public class WindowController {
 		browse_btn.setOnAction(browse_Action());
 		search_btn = new Button("Search");
 		search_btn.setOnAction(search_Action());
+		deleteBtn = new Button("Delete");
+		deleteBtn.setDisable(true);
+		deleteBtn.setOnAction(deleteAction());
+		cancelBtn = new Button("Cancel");
+		cancelBtn.setOnAction(cancelAction());
+		generatePDF = new Button("Export...");
+		generatePDF.setOnAction(exportAction());
 		search_field = new TextField();
 		search_field.setPromptText("File name");
 		switch (num) {
@@ -81,37 +104,167 @@ public class WindowController {
 		}
 
 		HBox search_layout = new HBox(5);
-		search_layout.getChildren().addAll(search_field, search_btn, browse_btn);
+		search_layout.getChildren().addAll(search_field, search_btn, browse_btn, generatePDF);
+		search_layout.setPadding(new Insets(10, 10, 10, 10));
 
 		HBox layout = new HBox(5);
-		layout.getChildren().addAll(section_Box, ago_btn);
+		layout.getChildren().addAll(section_Box, ago_btn, deleteBtn, cancelBtn);
+		layout.setPadding(new Insets(10, 10, 10, 10));
 
-		VBox finish = new VBox(10);
-		switch (num) {
+		VBox tableLayout = new VBox(10);
+		switch (myNum) {
 		case 1:
-			finish.getChildren().addAll(layout, cTable_Builder.get_table(1, st), search_layout);
+			table = cTable_Builder.get_table(1, st);
 			break;
 		case 2:
-			finish.getChildren().addAll(layout, cTable_Builder.get_table(2, st), search_layout);
+			table = cTable_Builder.get_table(2, st);
 			break;
 		case 3:
-			finish.getChildren().addAll(layout, cTable_Builder.get_table(3, st), search_layout);
+			table = cTable_Builder.get_table(3, st);
 			break;
 		case 4:
-			finish.getChildren().addAll(layout, cTable_Builder.get_table(4, st), search_layout);
+			table = cTable_Builder.get_table(4, st);
 			break;
 
 		}
-
-		finish.setPadding(new Insets(10, 0, 0, 10));
+		tableLayout.getChildren().addAll(table);
+		table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+			if (newSelection != null) {
+				selectedData = (Data) table.getSelectionModel().getSelectedItem();
+				deleteBtn.setDisable(false);
+			}
+		});
+		tableLayout.setPadding(new Insets(10, 10, 10, 10));
 
 		if (InputController.getGuestFlag() == true)
 			browse_btn.setVisible(false);
 		else
 			browse_btn.setVisible(true);
 
-		return finish;
+		BorderPane finishPane = new BorderPane();
+		finishPane.setBottom(search_layout);
+		finishPane.setTop(layout);
+		finishPane.setCenter(tableLayout);
+		finishPane.setPadding(new Insets(10, 10, 10, 10));
 
+		return finishPane;
+
+	}
+
+	public static EventHandler<ActionEvent> deleteAction() {
+
+		return new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+
+				if (e.getSource() == deleteBtn) {
+
+					try {
+						DataDaoImplements.getInstance().ConnectionDB();
+						DataDaoImplements.getInstance().deleteData(selectedData);
+						DataDaoImplements.getInstance().CloseDB();
+						Main.get_stage().setScene(
+								new Scene(WindowController.setTableScene(myNum, ""), 540, 400));
+						
+					} catch (ClassNotFoundException | SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		};
+	}
+	
+	public static EventHandler<ActionEvent> cancelAction() {
+
+		return new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+
+				if (e.getSource() == cancelBtn) {
+
+					Data item = null;
+					try {
+						item = getList().removeFirst();
+					} catch (NoSuchElementException e1) {
+						return;
+					}
+
+					/*
+					 * Boolean flag = item.getFlag(); try {
+					 * DaoStorageItemImplements.getInstance().ConnectionDB(); if
+					 * (flag) {
+					 * 
+					 * if
+					 * (DaoStorageItemImplements.getInstance().unloadData(item.
+					 * getStringName(), item.getStringCount(),
+					 * item.getStringSection())) { double width =
+					 * Main.get_stage().getWidth(); double height =
+					 * Main.get_stage().getHeight();
+					 * Main.get_stage().setScene(new Scene(
+					 * MainWindowController.setScene(MainWindowController.
+					 * getCurrentSection(), false), width - 16.5, height - 39));
+					 * }
+					 * 
+					 * } else {
+					 * 
+					 * DaoStorageItemImplements.getInstance().loadData(item.
+					 * getStringName(), item.getStringCount(),
+					 * item.getStringDate(), item.getStringSection()); double
+					 * width = Main.get_stage().getWidth(); double height =
+					 * Main.get_stage().getHeight(); Main.get_stage()
+					 * .setScene(new Scene(
+					 * MainWindowController.setScene(MainWindowController.
+					 * getCurrentSection(), false), width - 16.5, height - 39));
+					 * 
+					 * } DaoStorageItemImplements.getInstance().CloseDB(); }
+					 * catch (SQLException e) { // TODO Auto-generated catch
+					 * block e.printStackTrace(); } catch
+					 * (ClassNotFoundException e) { // TODO Auto-generated catch
+					 * block e.printStackTrace(); }
+					 * 
+					 * }
+					 */
+
+				}
+			}
+		};
+	}
+
+	public static EventHandler<ActionEvent> exportAction() {
+
+		return new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+
+				if (e.getSource() == generatePDF) {
+					FileChooser fileChooser = new FileChooser();
+					fileChooser.setTitle("Save Document");
+					FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF", "*.pdf");
+					fileChooser.getExtensionFilters().addAll(extFilter);
+					File file = fileChooser.showSaveDialog(Main.get_stage());
+					if (file != null) {
+						String fileName = file.getName();
+						if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+							fileName = fileName.substring(fileName.lastIndexOf("."));
+						if (file != null && fileName.equals(".pdf")) {
+							try {
+								GeneratePDF.createPDF(file.toString());
+							} catch (FileNotFoundException | ClassNotFoundException | DocumentException | SQLException
+									| InterruptedException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+
+							}
+						}
+					}
+
+				}
+			}
+		};
 	}
 
 	public static EventHandler<ActionEvent> ago_Action() {
@@ -122,7 +275,9 @@ public class WindowController {
 			public void handle(ActionEvent e) {
 
 				if (e.getSource() == ago_btn) {
-					Main.get_stage().setScene(new Scene(InputController.getPane(), 250, 135));
+					storageList.clear();
+					Main.get_stage().setResizable(false);
+					Main.get_stage().setScene(new Scene(InputController.getPane(), 270, 135));
 				}
 			}
 
@@ -157,19 +312,18 @@ public class WindowController {
 
 			@Override
 			public void handle(ActionEvent e) {
-				int num = 0;
 				if (e.getSource() == search_btn) {
 					if (section_Box.getValue().toString() == "Films") {
-						num = 2;
+						myNum = 2;
 					} else if (section_Box.getValue().toString() == "Books") {
-						num = 1;
+						myNum = 1;
 					} else if (section_Box.getValue().toString() == "Documents") {
-						num = 4;
+						myNum = 4;
 					} else if (section_Box.getValue().toString() == "Audio") {
-						num = 3;
+						myNum = 3;
 					}
-					Main.get_stage()
-							.setScene(new Scene(WindowController.setTableScene(num, search_field.getText()), 540, 400));
+					Main.get_stage().setScene(
+							new Scene(WindowController.setTableScene(myNum, search_field.getText()), 540, 400));
 
 				}
 			}
@@ -184,22 +338,21 @@ public class WindowController {
 
 			@Override
 			public void handle(ActionEvent e) {
-				int num = 0;
 				if (e.getSource() == browse_btn) {
 					if (section_Box.getValue().toString() == "Films") {
-						num = 2;
+						myNum = 2;
 					} else if (section_Box.getValue().toString() == "Books") {
-						num = 1;
+						myNum = 1;
 					} else if (section_Box.getValue().toString() == "Documents") {
-						num = 4;
+						myNum = 4;
 					} else if (section_Box.getValue().toString() == "Audio") {
-						num = 3;
+						myNum = 3;
 					}
-					File_Chooser.Create_Choose_Window(num);
+					File_Chooser.Create_Choose_Window(myNum);
 
 					try {
-						if (File_Chooser.add_Entry(InputController.getLogField(), num, InputController.getUserFlag()))
-							Main.get_stage().setScene(new Scene(WindowController.setTableScene(num, ""), 540, 400));
+						if (File_Chooser.add_Entry(InputController.getLogField(), myNum, InputController.getUserFlag()))
+							Main.get_stage().setScene(new Scene(WindowController.setTableScene(myNum, ""), 540, 400));
 					} catch (ClassNotFoundException | SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -211,4 +364,15 @@ public class WindowController {
 		};
 	}
 
+	public static String getCurrentSection() {
+		return section_Box.getValue().toString();
+	}
+
+	public static int getMyNum() {
+		return myNum;
+	}
+
+	public static LinkedList<Data> getList() {
+		return storageList;
+	}
 }
