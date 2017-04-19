@@ -13,12 +13,8 @@ import models.User;
 import models.User.ParserName;
 import models.User.Rights;
 import service.SerializeMaker;
-import service.requests.AddRequest;
-import service.requests.AddUserRequest;
-import service.requests.DeleteRequest;
-import service.requests.EditRequest;
-import service.requests.SearchRequest;
-import service.requests.UserValidateRequest;
+import service.requests.Request;
+
 
 public class ServerThread extends Thread {
 
@@ -46,23 +42,11 @@ public class ServerThread extends Thread {
 				// TODO Auto-generated catch block
 				return;
 			}
-			int i = 0;
-			int counter = 0;
-			while (true) {
-				if (serializeObj.charAt(i++) != '.') {
-					continue;
-				} else {
-					counter++;
-					if (counter == 2) {
-						while (serializeObj.charAt(i) != '>')
-							requestName = requestName + serializeObj.charAt(i++);
-						break;
-					}
-
-				}
-			}
+			
+			Request request = SerializeMaker.deserializeFromXML(serializeObj);
+			requestName = request.getRequestName();
 			switch (requestName) {
-			case "ShowAllRequest":
+			case "SHOWALL":
 				synchronized (MainServer.getCatalog()) {
 					try {
 
@@ -74,11 +58,11 @@ public class ServerThread extends Thread {
 					}
 				}
 				break;
-			case "ExitRequest":
+			case "EXIT":
 				return;
 
-			case "DeleteRequest":
-				DeleteRequest object = SerializeMaker.deserializeFromXML(serializeObj);
+			case "DELETE":
+				Person object = request.getOldPerson();
 				LinkedList<Person> catalog = MainServer.getCatalog();
 				synchronized (catalog) {
 					for (int i1 = 0; i1 < catalog.size(); i1++) {
@@ -106,9 +90,9 @@ public class ServerThread extends Thread {
 				}
 				break;
 
-			case "AddRequest":
-				AddRequest addObject = SerializeMaker.deserializeFromXML(serializeObj);
-				Person person = addObject.getPerson();
+			case "ADDPERSON":
+				
+				Person person = request.getOldPerson();
 				LinkedList<Person> list = MainServer.getCatalog();
 				synchronized (list) {
 					list.add(person);
@@ -122,10 +106,10 @@ public class ServerThread extends Thread {
 				}
 				break;
 			
-			case "EditRequest":
-				EditRequest editObject = SerializeMaker.deserializeFromXML(serializeObj);
-				Person newPerson = editObject.getNewPerson();
-				Person oldPerson = editObject.getOldPerson();
+			case "EDIT":
+				
+				Person newPerson = request.getNewPerson();
+				Person oldPerson = request.getOldPerson();
 				LinkedList<Person> llist = MainServer.getCatalog();
 				
 				synchronized (llist) {
@@ -173,9 +157,9 @@ public class ServerThread extends Thread {
 					
 				}
 				break;
-			case "SearchRequest":
-				SearchRequest searchObject = SerializeMaker.deserializeFromXML(serializeObj);
-				Person searchPerson = searchObject.getPerson();
+			case "SEARCH":
+				
+				Person searchPerson = request.getOldPerson();
 				LinkedList<Person> myList = MainServer.getCatalog();
 				LinkedList<Person> finishList = new LinkedList<Person>();
 				synchronized(myList){
@@ -220,10 +204,9 @@ public class ServerThread extends Thread {
 					}
 					break;
 				}
-			case "UserValidateRequest":
+			case "USERVALIDATE":
 				
-				UserValidateRequest request = SerializeMaker.deserializeFromXML(serializeObj);
-				User client = request.getClient();
+				User client = request.getUser();
 				LinkedList<User> catalogizer = MainServer.getUsersCatalog();
 				Boolean flag = false;
 				int index = 0;
@@ -257,7 +240,7 @@ public class ServerThread extends Thread {
 				}
 				break;
 				
-			case "GetUserTableRequest":
+			case "GETUSERTABLE":
 				//GetUserTableRequest requestAnswer = SerializeMaker.deserializeFromXML(serializeObj);
 				synchronized(MainServer.getUsersCatalog()){
 					try {
@@ -270,9 +253,8 @@ public class ServerThread extends Thread {
 				}
 				break;
 				
-			case "AddUserRequest":
-				AddUserRequest addUserRequest = SerializeMaker.deserializeFromXML(serializeObj);
-				User user = addUserRequest.getUser();
+			case "ADDUSER":
+				User user = request.getUser();
 				LinkedList<User> userList = MainServer.getUsersCatalog();
 				Boolean addFlag = false;
 				synchronized(userList){

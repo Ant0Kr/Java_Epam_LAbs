@@ -20,8 +20,7 @@ import javafx.stage.Stage;
 import mainGui.main;
 import models.Person;
 import service.SerializeMaker;
-import service.requests.AddRequest;
-import service.requests.EditRequest;
+import service.requests.Request;
 
 
 public class ClientDialogController {
@@ -148,9 +147,9 @@ public class ClientDialogController {
 			public void handle(ActionEvent e) {
 				if (e.getSource() == runBtn) {
 					if (myflag) {
-						AddRequest request = new AddRequest(new Person(surnameField.getText(), nameField.getText(),
+						Request request = new Request("ADDPERSON",new Person(surnameField.getText(), nameField.getText(),
 								fathernameField.getText(), phoneField.getText(), emailField.getText(),
-								nameJobField.getText(), experienceJobField.getText()));
+								nameJobField.getText(), experienceJobField.getText()),null,null);
 						try {
 							ClientEntranceController.getClient().getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
 						} catch (IOException e1) {
@@ -164,7 +163,7 @@ public class ClientDialogController {
 								fathernameField.getText(), phoneField.getText(), emailField.getText(),
 								nameJobField.getText(), experienceJobField.getText());
 						
-						EditRequest request = new EditRequest(oldPerson, newPerson);
+						Request request = new Request("EDIT",oldPerson, newPerson,null);
 						try {
 							ClientEntranceController.getClient().getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
 						} catch (IOException e1) {

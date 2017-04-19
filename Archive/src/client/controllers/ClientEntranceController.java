@@ -1,20 +1,15 @@
 package client.controllers;
 
 import mainGui.main;
-import models.Person;
 import models.User;
 import models.User.ParserName;
 import models.User.Rights;
 import service.SerializeMaker;
-import service.requests.AddUserRequest;
-import service.requests.SearchRequest;
-import service.requests.UserValidateRequest;
+
+import service.requests.Request;
+
 
 import java.io.IOException;
-import java.util.LinkedList;
-
-import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
-
 import client.MainClient;
 
 import javafx.beans.value.ChangeListener;
@@ -44,6 +39,7 @@ public class ClientEntranceController {
 	private static Button sign_btn;
 	private static Button regBtn;
 	private static Button goBtn;
+	private static Button backBtn;
 
 	public static Scene getEntranceScene() {
 
@@ -89,6 +85,9 @@ public class ClientEntranceController {
 			@Override
 			public void handle(ActionEvent e) {
 
+				backBtn = new Button("Back");
+				backBtn.setPrefWidth(70);
+				backBtn.setOnAction(backAction());
 				goBtn = new Button("Go");
 				goBtn.setDisable(true);
 				goBtn.setPrefWidth(70);
@@ -100,6 +99,8 @@ public class ClientEntranceController {
 				regLogField.lengthProperty().addListener(regListener());
 				regPassField.lengthProperty().addListener(regListener());
 
+				
+				
 				VBox label_layout = new VBox(13);
 				label_layout.getChildren().addAll(log_label, pass_label);
 
@@ -114,18 +115,20 @@ public class ClientEntranceController {
 				hor_layout.getChildren().addAll(spaceLabel, goBtn);
 
 				VBox fin_layout = new VBox(7);
-				fin_layout.getChildren().addAll(V_layout, hor_layout);
+				fin_layout.getChildren().addAll(backBtn,V_layout, hor_layout);
 
 				BorderPane border = new BorderPane();
 				border.setCenter(fin_layout);
-				border.setPadding(new Insets(30, 0, 0, 20));
+				border.setPadding(new Insets(10, 0, 0, 20));
 
-				Scene scene = new Scene(border, 250, 130);
+				Scene scene = new Scene(border, 255, 145);
 				main.get_stage().setScene(scene);
 
 			}
 		};
 	}
+	
+	
 
 	public static ChangeListener<Number> regListener() {
 
@@ -145,6 +148,19 @@ public class ClientEntranceController {
 
 		};
 	}
+	
+	public static EventHandler<ActionEvent> backAction() {
+
+		return new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				
+				main.get_stage().setScene(getEntranceScene());
+			}
+		};
+	}
+
 
 	public static EventHandler<ActionEvent> goAction() {
 
@@ -154,7 +170,7 @@ public class ClientEntranceController {
 			public void handle(ActionEvent e) {
 				try {
 					User user = new User(regLogField.getText(), regPassField.getText(), Rights.USER, ParserName.SAX);
-					AddUserRequest request = new AddUserRequest(user);
+					Request request = new Request("ADDUSER",null,null,user);
 					client = new MainClient("Guest", "Guest", Rights.GUEST, ParserName.JDOM);
 					client.ClientConnection();
 					client.getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
@@ -174,9 +190,10 @@ public class ClientEntranceController {
 					}
 					else
 						main.get_stage().setScene(new Scene(ClientMainController.getPane(2), 805, 600));
-				} catch (IOException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println("Server disconnected!");
+					return;
 				}
 
 			}
@@ -201,7 +218,7 @@ public class ClientEntranceController {
 						client = new MainClient(log_field.getText(), pass_field.getText(), null, null);
 						client.ClientConnection();
 
-						UserValidateRequest request = new UserValidateRequest(client.getUser());
+						Request request = new Request("USERVALIDATE",null,null,client.getUser());
 						
 							client.getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
 						

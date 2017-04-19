@@ -216,7 +216,7 @@ public class ClientMainController {
 		userTable.getColumns().addAll(login, pass, rights, parser);
 		userTable.setPrefSize(400, 300);
 
-		GetUserTableRequest request = new GetUserTableRequest();
+		Request request = new Request("GETUSERTABLE",null,null,null);
 		try {
 			ClientEntranceController.getClient().getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
 		} catch (IOException e1) {
@@ -325,7 +325,7 @@ public class ClientMainController {
 							fathernameField.getText(), phoneField.getText(), emailField.getText(),
 							nameJobField.getText(), experienceJobField.getText());
 
-					SearchRequest request = new SearchRequest(searchPerson);
+					Request request = new Request("SEARCH",searchPerson,null,null);
 					try {
 						ClientEntranceController.getClient().getOutputStream()
 								.writeUTF(SerializeMaker.serializeToXML(request));
@@ -363,7 +363,7 @@ public class ClientMainController {
 			@Override
 			public void handle(ActionEvent e) {
 				if (e.getSource() == exitBtn) {
-					ExitRequest request = new ExitRequest();
+					Request request = new Request("EXIT",null,null,null);
 					try {
 						ClientEntranceController.getClient().getOutputStream()
 								.writeUTF(SerializeMaker.serializeToXML(request));
@@ -389,7 +389,7 @@ public class ClientMainController {
 			@Override
 			public void handle(ActionEvent e) {
 				if (e.getSource() == showAllBtn) {
-					ShowAllRequest request = new ShowAllRequest();
+					Request request = new Request("SHOWALL",null,null,null);
 					try {
 						ClientEntranceController.getClient().getOutputStream()
 								.writeUTF(SerializeMaker.serializeToXML(request));
@@ -426,8 +426,7 @@ public class ClientMainController {
 			@Override
 			public void handle(ActionEvent e) {
 				if (e.getSource() == deleteBtn) {
-					DeleteRequest request = new DeleteRequest(selectedPerson.getSurname(), selectedPerson.getName(),
-							selectedPerson.getFathername(), selectedPerson.getEMail());
+					Request request = new Request("DELETE",selectedPerson,null,null);
 					try {
 						ClientEntranceController.getClient().getOutputStream()
 								.writeUTF(SerializeMaker.serializeToXML(request));
