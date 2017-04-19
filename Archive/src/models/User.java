@@ -16,7 +16,6 @@ public class User {
 		ADMINISTRATOR, 
 		SENIORUSER,
 		USER,
-		GUEST
 	};
 
 	private ParserName parser;

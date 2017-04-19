@@ -3,6 +3,7 @@ package client.controllers;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import com.thoughtworks.xstream.XStream;
@@ -17,8 +18,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -57,6 +61,8 @@ public class ClientMainController {
 	private static Button changeParserBtn;
 	private static Button exitBtn;
 	private static int rights;
+	private static ContextMenu contextParserMenu;
+	private static ContextMenu contextRightsMenu;
 
 	public static BorderPane getPane(int rightsLevel) throws IOException {
 
@@ -145,6 +151,25 @@ public class ClientMainController {
 			changeParserBtn.setDisable(true);
 			changeRightsBtn.setPrefWidth(120);
 			changeParserBtn.setPrefWidth(120);
+			
+			contextParserMenu = new ContextMenu();
+			MenuItem domItem = new MenuItem("DOM");
+			MenuItem jDomItem = new MenuItem("JDOM");
+			MenuItem saxItem = new MenuItem("SAX");
+			MenuItem staxItem = new MenuItem("STAX");
+			
+			contextRightsMenu = new ContextMenu();
+			MenuItem adminItem = new MenuItem("ADMINISTRATOR");
+			MenuItem seniorItem = new MenuItem("SENIOR USER");
+			MenuItem userItem = new MenuItem("USER");
+			
+			contextParserMenu.getItems().addAll(domItem,jDomItem,saxItem,staxItem);
+			changeParserBtn.setContextMenu(contextParserMenu);
+			changeParserBtn.setOnAction(changeParserAction());
+			
+			contextRightsMenu.getItems().addAll(adminItem,seniorItem,userItem);
+			changeRightsBtn.setContextMenu(contextRightsMenu);
+			changeRightsBtn.setOnAction(changeRightsAction());
 
 			HBox tablePlusBtnLayout = new HBox(5);
 			tablePlusBtnLayout.getChildren().addAll(tableLayout, serviceBtnLayout);
@@ -161,7 +186,7 @@ public class ClientMainController {
 
 			VBox adminFinishLayout = new VBox(5);
 			adminFinishLayout.getChildren().addAll(userTableLayout, adminBtnLayout);
-			adminFinishLayout.setPadding(new Insets(0, 0, 20, 10));
+			adminFinishLayout.setPadding(new Insets(0, 20, 20, 10));
 
 			mainPane.setCenter(tablePlusBtnLayout);
 			mainPane.setBottom(finishSearchLayout);
@@ -312,7 +337,37 @@ public class ClientMainController {
 		deleteBtn.setVisible(false);
 		addBtn.setVisible(false);
 	}
+	
+	public static EventHandler<ActionEvent> changeRightsAction() {
 
+		return new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				if (e.getSource() == changeRightsBtn) {
+
+				contextRightsMenu.show(changeRightsBtn,Side.BOTTOM,0,0);
+				}
+
+			}
+		};
+	}
+	
+	public static EventHandler<ActionEvent> changeParserAction() {
+
+		return new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				if (e.getSource() == changeParserBtn) {
+
+				contextParserMenu.show(changeParserBtn,Side.BOTTOM,0,0);
+				}
+
+			}
+		};
+	}
+	
 	public static EventHandler<ActionEvent> searchAction() {
 
 		return new EventHandler<ActionEvent>() {

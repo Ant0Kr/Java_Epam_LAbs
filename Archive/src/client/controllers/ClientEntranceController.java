@@ -171,7 +171,7 @@ public class ClientEntranceController {
 				try {
 					User user = new User(regLogField.getText(), regPassField.getText(), Rights.USER, ParserName.SAX);
 					Request request = new Request("ADDUSER",null,null,user);
-					client = new MainClient("Guest", "Guest", Rights.GUEST, ParserName.JDOM);
+					client = new MainClient(regLogField.getText(), regPassField.getText(), Rights.USER, ParserName.SAX);
 					client.ClientConnection();
 					client.getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
 
@@ -209,7 +209,7 @@ public class ClientEntranceController {
 				try {
 					if ((pass_field.getText().isEmpty() || log_field.getText().isEmpty())
 							|| (pass_field.getText().isEmpty() && log_field.getText().isEmpty())) {
-						client = new MainClient("Guest", "Guest", Rights.GUEST, ParserName.JDOM);
+						client = new MainClient("Guest", "Guest", null, ParserName.DOM);
 
 						if (client.ClientConnection())
 							main.get_stage().setScene(new Scene(ClientMainController.getPane(1), 805, 600));
