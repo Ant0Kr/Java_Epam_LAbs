@@ -1,15 +1,8 @@
 package client.controllers;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Collection;
 import java.util.LinkedList;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-
-import client.MainClient;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -33,6 +26,8 @@ import javafx.scene.layout.VBox;
 import mainGui.main;
 import models.Person;
 import models.User;
+import models.User.ParserName;
+import models.User.Rights;
 import service.SerializeMaker;
 import service.requests.*;
 
@@ -44,7 +39,7 @@ public class ClientMainController {
 	private static LinkedList<Person> archiveCatalog = null;
 	private static LinkedList<User> userCatalog = null;
 	private static TableView archiveTable = null;
-	private static TableView userTable;
+	private static TableView userTable = null;
 	private static TextField surnameField;
 	private static TextField fathernameField;
 	private static TextField nameField;
@@ -67,6 +62,7 @@ public class ClientMainController {
 	public static BorderPane getPane(int rightsLevel) throws IOException {
 
 		rights = rightsLevel;
+
 		surnameField = new TextField();
 		fathernameField = new TextField();
 		nameField = new TextField();
@@ -74,6 +70,7 @@ public class ClientMainController {
 		emailField = new TextField();
 		nameJobField = new TextField();
 		experienceJobField = new TextField();
+
 		surnameField.lengthProperty().addListener(searchListener());
 		nameField.lengthProperty().addListener(searchListener());
 		fathernameField.lengthProperty().addListener(searchListener());
@@ -81,6 +78,7 @@ public class ClientMainController {
 		emailField.lengthProperty().addListener(searchListener());
 		nameJobField.lengthProperty().addListener(searchListener());
 		experienceJobField.lengthProperty().addListener(searchListener());
+
 		surnameField.setPromptText("-surname-");
 		fathernameField.setPromptText("-father name-");
 		nameField.setPromptText("-name-");
@@ -143,7 +141,7 @@ public class ClientMainController {
 
 		BorderPane mainPane = new BorderPane();
 
-		if (rightsLevel == 0) {
+		if (rightsLevel == 0) { // admin
 
 			changeRightsBtn = new Button("Change rights");
 			changeParserBtn = new Button("Change parser");
@@ -151,23 +149,72 @@ public class ClientMainController {
 			changeParserBtn.setDisable(true);
 			changeRightsBtn.setPrefWidth(120);
 			changeParserBtn.setPrefWidth(120);
-			
+
 			contextParserMenu = new ContextMenu();
+
 			MenuItem domItem = new MenuItem("DOM");
+			domItem.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					selectedUser.setParser(ParserName.DOM);
+					ChangeUserParser(selectedUser);
+				}
+			});
+
 			MenuItem jDomItem = new MenuItem("JDOM");
+			jDomItem.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					selectedUser.setParser(ParserName.JDOM);
+					ChangeUserParser(selectedUser);
+				}
+			});
+
 			MenuItem saxItem = new MenuItem("SAX");
+			saxItem.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					selectedUser.setParser(ParserName.SAX);
+					ChangeUserParser(selectedUser);
+				}
+			});
+
 			MenuItem staxItem = new MenuItem("STAX");
-			
+			staxItem.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					selectedUser.setParser(ParserName.STAX);
+					ChangeUserParser(selectedUser);
+				}
+			});
+
 			contextRightsMenu = new ContextMenu();
+
 			MenuItem adminItem = new MenuItem("ADMINISTRATOR");
+			adminItem.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					selectedUser.setRights(Rights.ADMINISTRATOR);
+					ChangeUserRights(selectedUser);
+				}
+			});
+
 			MenuItem seniorItem = new MenuItem("SENIOR USER");
+			seniorItem.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					selectedUser.setRights(Rights.SENIORUSER);
+					ChangeUserRights(selectedUser);
+				}
+			});
+
 			MenuItem userItem = new MenuItem("USER");
-			
-			contextParserMenu.getItems().addAll(domItem,jDomItem,saxItem,staxItem);
+			userItem.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					selectedUser.setRights(Rights.USER);
+					ChangeUserRights(selectedUser);
+				}
+			});
+
+			contextParserMenu.getItems().addAll(domItem, jDomItem, saxItem, staxItem);
 			changeParserBtn.setContextMenu(contextParserMenu);
 			changeParserBtn.setOnAction(changeParserAction());
-			
-			contextRightsMenu.getItems().addAll(adminItem,seniorItem,userItem);
+
+			contextRightsMenu.getItems().addAll(adminItem, seniorItem, userItem);
 			changeRightsBtn.setContextMenu(contextRightsMenu);
 			changeRightsBtn.setOnAction(changeRightsAction());
 
@@ -194,9 +241,9 @@ public class ClientMainController {
 
 		} else {
 
-			if (rightsLevel == 1) {
+			if (rightsLevel == 1) { // Guest
 				setGuestHide();
-			} else if (rightsLevel == 2) {
+			} else if (rightsLevel == 2) { // User,else Senior user
 				setUserHide();
 			}
 
@@ -211,110 +258,96 @@ public class ClientMainController {
 
 	public static TableView createUserTable() {
 
-		userTable = new TableView();
-		userTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-			if (newSelection != null) {
-				selectedUser = (User) userTable.getSelectionModel().getSelectedItem();
-				if (rights != 1) {
-					changeParserBtn.setDisable(false);
-					changeRightsBtn.setDisable(false);
+		if (userTable == null) {
+			userTable = new TableView();
+			userTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+				if (newSelection != null) {
+					selectedUser = (User) userTable.getSelectionModel().getSelectedItem();
+					if (rights != 1) {
+						changeParserBtn.setDisable(false);
+						changeRightsBtn.setDisable(false);
+					}
 				}
-			}
-		});
+			});
 
-		TableColumn login = new TableColumn("Login");
-		login.setCellValueFactory(new PropertyValueFactory<User, String>("login"));
-		login.setPrefWidth(110);
+			TableColumn login = new TableColumn("Login");
+			login.setCellValueFactory(new PropertyValueFactory<User, String>("login"));
+			login.setPrefWidth(110);
 
-		TableColumn pass = new TableColumn("Password");
-		pass.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
-		pass.setPrefWidth(110);
+			TableColumn pass = new TableColumn("Password");
+			pass.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
+			pass.setPrefWidth(110);
 
-		TableColumn rights = new TableColumn("Rights");
-		rights.setCellValueFactory(new PropertyValueFactory<User, String>("rights"));
-		rights.setPrefWidth(100);
+			TableColumn rights = new TableColumn("Rights");
+			rights.setCellValueFactory(new PropertyValueFactory<User, String>("rights"));
+			rights.setPrefWidth(100);
 
-		TableColumn parser = new TableColumn("Parser");
-		parser.setCellValueFactory(new PropertyValueFactory<User, String>("parser"));
-		parser.setPrefWidth(70);
+			TableColumn parser = new TableColumn("Parser");
+			parser.setCellValueFactory(new PropertyValueFactory<User, String>("parser"));
+			parser.setPrefWidth(70);
 
-		userTable.getColumns().addAll(login, pass, rights, parser);
-		userTable.setPrefSize(400, 300);
-
-		Request request = new Request("GETUSERTABLE",null,null,null);
-		try {
-			ClientEntranceController.getClient().getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			userTable.getColumns().addAll(login, pass, rights, parser);
+			userTable.setPrefSize(400, 300);
 		}
-
+		Request request = new Request("GETUSERTABLE", null, null, null);
 		String response = new String();
 		try {
+			ClientEntranceController.getClient().getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
 			response = ClientEntranceController.getClient().getInputStream().readUTF();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		LinkedList<User> list = SerializeMaker.deserializeFromXML(response);
-		setUserTable(list);
-		
-		
-		if (userCatalog != null) {
-			ObservableList<User> item = FXCollections.observableArrayList();
-			for (int i = 0; i < userCatalog.size(); i++) {
-				User user = userCatalog.get(i);
-				item.addAll(user);
-			}
-			userTable.setItems(item);
-		}
+		changeUserTable(SerializeMaker.deserializeFromXML(response));
 		return userTable;
 	}
 
 	public static TableView createArchiveTable() {
 
-		archiveTable = new TableView();
+		if (archiveTable == null) {
+			archiveTable = new TableView();
 
-		archiveTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-			if (newSelection != null) {
-				selectedPerson = (Person) archiveTable.getSelectionModel().getSelectedItem();
-				if (rights != 1) {
-					deleteBtn.setDisable(false);
-					editBtn.setDisable(false);
+			archiveTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+				if (newSelection != null) {
+					selectedPerson = (Person) archiveTable.getSelectionModel().getSelectedItem();
+					if (rights != 1) {
+						deleteBtn.setDisable(false);
+						editBtn.setDisable(false);
+					}
 				}
-			}
-		});
+			});
 
-		TableColumn surname = new TableColumn("Surname");
-		surname.setCellValueFactory(new PropertyValueFactory<Person, String>("surname"));
-		surname.setPrefWidth(70);
+			TableColumn surname = new TableColumn("Surname");
+			surname.setCellValueFactory(new PropertyValueFactory<Person, String>("surname"));
+			surname.setPrefWidth(70);
 
-		TableColumn name = new TableColumn("Name");
-		name.setCellValueFactory(new PropertyValueFactory<Person, String>("name"));
-		name.setPrefWidth(70);
+			TableColumn name = new TableColumn("Name");
+			name.setCellValueFactory(new PropertyValueFactory<Person, String>("name"));
+			name.setPrefWidth(70);
 
-		TableColumn fathername = new TableColumn("Fathername");
-		fathername.setCellValueFactory(new PropertyValueFactory<Person, String>("fathername"));
-		fathername.setPrefWidth(110);
+			TableColumn fathername = new TableColumn("Fathername");
+			fathername.setCellValueFactory(new PropertyValueFactory<Person, String>("fathername"));
+			fathername.setPrefWidth(110);
 
-		TableColumn phone = new TableColumn("Phone number");
-		phone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));
-		phone.setPrefWidth(110);
+			TableColumn phone = new TableColumn("Phone number");
+			phone.setCellValueFactory(new PropertyValueFactory<Person, String>("phone"));
+			phone.setPrefWidth(110);
 
-		TableColumn email = new TableColumn("eMail");
-		email.setCellValueFactory(new PropertyValueFactory<Person, String>("eMail"));
-		email.setPrefWidth(130);
+			TableColumn email = new TableColumn("eMail");
+			email.setCellValueFactory(new PropertyValueFactory<Person, String>("eMail"));
+			email.setPrefWidth(130);
 
-		TableColumn nameJob = new TableColumn("Job name");
-		nameJob.setCellValueFactory(new PropertyValueFactory<Person, String>("nameJob"));
-		nameJob.setPrefWidth(70);
+			TableColumn nameJob = new TableColumn("Job name");
+			nameJob.setCellValueFactory(new PropertyValueFactory<Person, String>("nameJob"));
+			nameJob.setPrefWidth(70);
 
-		TableColumn experienceJob = new TableColumn("Job experience");
-		experienceJob.setCellValueFactory(new PropertyValueFactory<Person, String>("experienceJob"));
-		experienceJob.setPrefWidth(90);
+			TableColumn experienceJob = new TableColumn("Job experience");
+			experienceJob.setCellValueFactory(new PropertyValueFactory<Person, String>("experienceJob"));
+			experienceJob.setPrefWidth(90);
 
-		archiveTable.getColumns().addAll(surname, name, fathername, phone, email, nameJob, experienceJob);
-		archiveTable.setPrefSize(800, 1500);
+			archiveTable.getColumns().addAll(surname, name, fathername, phone, email, nameJob, experienceJob);
+			archiveTable.setPrefSize(800, 1500);
+		}
 		if (archiveCatalog != null) {
 			ObservableList<Person> item = FXCollections.observableArrayList();
 			for (int i = 0; i < archiveCatalog.size(); i++) {
@@ -327,17 +360,6 @@ public class ClientMainController {
 		return archiveTable;
 	}
 
-	public static void setGuestHide() {
-		editBtn.setVisible(false);
-		deleteBtn.setVisible(false);
-		addBtn.setVisible(false);
-	}
-
-	public static void setUserHide() {
-		deleteBtn.setVisible(false);
-		addBtn.setVisible(false);
-	}
-	
 	public static EventHandler<ActionEvent> changeRightsAction() {
 
 		return new EventHandler<ActionEvent>() {
@@ -346,13 +368,13 @@ public class ClientMainController {
 			public void handle(ActionEvent e) {
 				if (e.getSource() == changeRightsBtn) {
 
-				contextRightsMenu.show(changeRightsBtn,Side.BOTTOM,0,0);
+					contextRightsMenu.show(changeRightsBtn, Side.BOTTOM, 0, 0);
 				}
 
 			}
 		};
 	}
-	
+
 	public static EventHandler<ActionEvent> changeParserAction() {
 
 		return new EventHandler<ActionEvent>() {
@@ -361,13 +383,13 @@ public class ClientMainController {
 			public void handle(ActionEvent e) {
 				if (e.getSource() == changeParserBtn) {
 
-				contextParserMenu.show(changeParserBtn,Side.BOTTOM,0,0);
+					contextParserMenu.show(changeParserBtn, Side.BOTTOM, 0, 0);
 				}
 
 			}
 		};
 	}
-	
+
 	public static EventHandler<ActionEvent> searchAction() {
 
 		return new EventHandler<ActionEvent>() {
@@ -380,33 +402,18 @@ public class ClientMainController {
 							fathernameField.getText(), phoneField.getText(), emailField.getText(),
 							nameJobField.getText(), experienceJobField.getText());
 
-					Request request = new Request("SEARCH",searchPerson,null,null);
+					Request request = new Request("SEARCH", searchPerson, null, null);
+					String response = new String();
 					try {
 						ClientEntranceController.getClient().getOutputStream()
 								.writeUTF(SerializeMaker.serializeToXML(request));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-					String response = new String();
-					try {
 						response = ClientEntranceController.getClient().getInputStream().readUTF();
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					LinkedList<Person> list = SerializeMaker.deserializeFromXML(response);
-					setArchive(list);
-					try {
-						double height = main.get_stage().getHeight();
-						double width = main.get_stage().getWidth();
-						main.get_stage()
-								.setScene(new Scene(ClientMainController.getPane(rights), width - 16.5, height - 39));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					changeArchiveTable(SerializeMaker.deserializeFromXML(response));
+
 				}
 
 			}
@@ -418,7 +425,7 @@ public class ClientMainController {
 			@Override
 			public void handle(ActionEvent e) {
 				if (e.getSource() == exitBtn) {
-					Request request = new Request("EXIT",null,null,null);
+					Request request = new Request("EXIT", null, null, null);
 					try {
 						ClientEntranceController.getClient().getOutputStream()
 								.writeUTF(SerializeMaker.serializeToXML(request));
@@ -426,13 +433,13 @@ public class ClientMainController {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-
+					
+					archiveCatalog = null;
+					archiveTable = null;
+					userTable = null;
+					userCatalog = null;
 					main.get_stage().setScene(ClientEntranceController.getEntranceScene());
-					if (archiveCatalog != null) {
-						archiveCatalog.clear();
-						archiveCatalog = null;
-					}
-
+					
 				}
 
 			}
@@ -444,32 +451,17 @@ public class ClientMainController {
 			@Override
 			public void handle(ActionEvent e) {
 				if (e.getSource() == showAllBtn) {
-					Request request = new Request("SHOWALL",null,null,null);
+					Request request = new Request("SHOWALL", null, null, null);
+					String response = new String();
 					try {
 						ClientEntranceController.getClient().getOutputStream()
 								.writeUTF(SerializeMaker.serializeToXML(request));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-					String response = new String();
-					try {
 						response = ClientEntranceController.getClient().getInputStream().readUTF();
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					archiveCatalog = SerializeMaker.deserializeFromXML(response);
-					try {
-						double height = main.get_stage().getHeight();
-						double width = main.get_stage().getWidth();
-						main.get_stage()
-								.setScene(new Scene(ClientMainController.getPane(rights), width - 16.5, height - 39));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					changeArchiveTable(SerializeMaker.deserializeFromXML(response));
 				}
 
 			}
@@ -481,34 +473,17 @@ public class ClientMainController {
 			@Override
 			public void handle(ActionEvent e) {
 				if (e.getSource() == deleteBtn) {
-					Request request = new Request("DELETE",selectedPerson,null,null);
+					Request request = new Request("DELETE", selectedPerson, null, null);
+					String response = new String();
 					try {
 						ClientEntranceController.getClient().getOutputStream()
 								.writeUTF(SerializeMaker.serializeToXML(request));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-					String response = new String();
-					try {
 						response = ClientEntranceController.getClient().getInputStream().readUTF();
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					LinkedList<Person> list = SerializeMaker.deserializeFromXML(response);
-					archiveCatalog.clear();
-					archiveCatalog = list;
-					try {
-						double height = main.get_stage().getHeight();
-						double width = main.get_stage().getWidth();
-						main.get_stage()
-								.setScene(new Scene(ClientMainController.getPane(rights), width - 16.5, height - 39));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					changeArchiveTable(SerializeMaker.deserializeFromXML(response));
 				}
 
 			}
@@ -559,20 +534,71 @@ public class ClientMainController {
 		};
 	}
 
-	public static void setArchive(LinkedList<Person> archive) {
-		if (archiveCatalog == null)
-			archiveCatalog = new LinkedList<Person>();
-		archiveCatalog.clear();
+	public static void changeArchiveTable(LinkedList<Person> archive) {
 		archiveCatalog = archive;
-	}
-	
-	public static void setUserTable(LinkedList<User> userList){
-		if (userCatalog == null)
-			userCatalog = new LinkedList<User>();
-		userCatalog.clear();
-		userCatalog = userList;
+		ObservableList<Person> item = FXCollections.observableArrayList();
+		for (int i = 0; i < archiveCatalog.size(); i++) {
+			Person person = archiveCatalog.get(i);
+			item.addAll(person);
+		}
+		archiveTable.setItems(item);
+
 	}
 
+	public static void changeUserTable(LinkedList<User> userList) {
+		userCatalog = userList;
+		ObservableList<User> item = FXCollections.observableArrayList();
+		for (int i = 0; i < userCatalog.size(); i++) {
+			User user = userCatalog.get(i);
+			item.addAll(user);
+		}
+		userTable.setItems(item);
+
+	}
+
+	public static void ChangeUserParser(User user) {
+
+		Request request = new Request("CHANGEPARSER", null, null, user);
+		try {
+			ClientEntranceController.getClient().getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
+			String response = new String();
+			response = ClientEntranceController.getClient().getInputStream().readUTF();
+			changeUserTable(SerializeMaker.deserializeFromXML(response));
+			changeParserBtn.setDisable(true);
+			changeRightsBtn.setDisable(true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void ChangeUserRights(User user) {
+		Request request = new Request("CHANGERIGHTS", null, null, user);
+		try {
+			ClientEntranceController.getClient().getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
+			String response = new String();
+			response = ClientEntranceController.getClient().getInputStream().readUTF();
+			changeUserTable(SerializeMaker.deserializeFromXML(response));
+			changeParserBtn.setDisable(true);
+			changeRightsBtn.setDisable(true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void setGuestHide() {
+		editBtn.setVisible(false);
+		deleteBtn.setVisible(false);
+		addBtn.setVisible(false);
+	}
+
+	public static void setUserHide() {
+		deleteBtn.setVisible(false);
+		addBtn.setVisible(false);
+	}
+	
 	public static int getRights() {
 		return rights;
 	}

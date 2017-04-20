@@ -42,7 +42,6 @@ public class ServerThread extends Thread {
 				// TODO Auto-generated catch block
 				return;
 			}
-			
 			Request request = SerializeMaker.deserializeFromXML(serializeObj);
 			requestName = request.getRequestName();
 			switch (requestName) {
@@ -282,6 +281,60 @@ public class ServerThread extends Thread {
 					
 				}
 				break;
+				
+			case "CHANGERIGHTS":
+				
+				User changeUser = request.getUser();
+				LinkedList<User> userLis = MainServer.getUsersCatalog();
+				synchronized(userLis){
+					for(int z = 0;z<userLis.size();z++){
+						if(changeUser.getLogin().equals(userLis.get(z).getLogin()) && 
+								changeUser.getPassword().equals(userLis.get(z).getPassword())){
+							userLis.get(z).setRights(changeUser.getRights());
+							
+							
+						}
+					}
+				}
+				File file = new File("Data\\Users\\" + changeUser.getLogin() + ".zip");
+				file.delete();
+				
+				SerializeMaker.saveXML(changeUser,changeUser.getLogin(),"Data\\Users\\");
+				try {
+					out.writeUTF(SerializeMaker.serializeToXML(userLis));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+				
+			case "CHANGEPARSER":
+				
+				User changeParserUser = request.getUser();
+				LinkedList<User> userL = MainServer.getUsersCatalog();
+				synchronized(userL){
+					for(int z = 0;z<userL.size();z++){
+						if(changeParserUser.getLogin().equals(userL.get(z).getLogin()) && 
+								changeParserUser.getPassword().equals(userL.get(z).getPassword())){
+							userL.get(z).setParser(changeParserUser.getParser());
+							
+							
+						}
+					}
+				}
+				File fille = new File("Data\\Users\\" + changeParserUser.getLogin() + ".zip");
+				fille.delete();
+				
+				SerializeMaker.saveXML(changeParserUser,changeParserUser.getLogin(),"Data\\Users\\");
+				try {
+					out.writeUTF(SerializeMaker.serializeToXML(userL));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+				
+				
 			}
 
 		}

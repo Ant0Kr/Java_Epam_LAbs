@@ -181,15 +181,7 @@ public class ClientDialogController {
 						e1.printStackTrace();
 					}
 					LinkedList<Person> list = SerializeMaker.deserializeFromXML(response);
-					ClientMainController.setArchive(list);
-					try {
-						double height = main.get_stage().getHeight();
-						double width = main.get_stage().getWidth();
-						main.get_stage().setScene(new Scene(ClientMainController.getPane(ClientMainController.getRights()),width-16.5,height-39));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					ClientMainController.changeArchiveTable(list);
 					clearFields();
 					stage.close();
 				}

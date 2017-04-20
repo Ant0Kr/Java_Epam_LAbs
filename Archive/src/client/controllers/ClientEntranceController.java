@@ -220,11 +220,9 @@ public class ClientEntranceController {
 
 						Request request = new Request("USERVALIDATE",null,null,client.getUser());
 						
-							client.getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
+						client.getOutputStream().writeUTF(SerializeMaker.serializeToXML(request));
 						
-
 						String response = new String();
-
 						response = client.getInputStream().readUTF();
 
 						client.setUser(SerializeMaker.deserializeFromXML(response));
